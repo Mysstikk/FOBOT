@@ -1,0 +1,9 @@
+# Default initial positions for FOBOT's ros2_control fake system
+
+initial_positions:
+  joint_codo: 0
+  joint_codo_muneca: 0
+  joint_herramienta: 0
+  joint_hombro: 0
+  joint_hombro_codo: 0
+  joint_muneca: 0

@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="FOBOT" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <link name="world_link" />
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world_link" />
+    <child link="base_link" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.000324527792386832 0.000535590007123509 0.0536555243566054"
+        rpy="0 0 0" />
+      <mass
+        value="0.640667020480894" />
+      <inertia
+        ixx="0.00143547613681385"
+        ixy="2.95444591614989E-05"
+        ixz="4.77247209910437E-06"
+        iyy="0.00139278953446347"
+        iyz="5.88479191836546E-06"
+        izz="0.00256812979918848" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0.045"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.15 0.15 0.085" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="link_hombro">
+    <inertial>
+      <origin
+        xyz="0.0177586720760899 0.000311723505450981 0.0594351103623852"
+        rpy="0 0 0" />
+      <mass
+        value="0.654879795952153" />
+      <inertia
+        ixx="0.000626450707440152"
+        ixy="1.31559228548189E-06"
+        ixz="8.57966162417347E-07"
+        iyy="0.000551741556799818"
+        iyz="1.80815567358232E-08"
+        izz="0.000585197394693305" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/link_hombro.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0.07"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.06" length="0.125" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_hombro"
+    type="revolute">
+    <origin
+      xyz="0 0 0.0831"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="link_hombro" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="4.1"
+      velocity="4.81" />
+  </joint>
+  <link
+    name="link_hombro_codo">
+    <inertial>
+      <origin
+        xyz="0.00174671434810424 0.127639245502884 0.0995470053851245"
+        rpy="0 0 0" />
+      <mass
+        value="0.36538432537355" />
+      <inertia
+        ixx="0.000616796454997089"
+        ixy="2.2456451717145E-07"
+        ixz="-1.67085745350063E-06"
+        iyy="0.000411906520965051"
+        iyz="1.27865283508023E-05"
+        izz="0.000521599070927461" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/link_hombro_codo.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.002 0.125 0.13"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.066 0.3 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_hombro_codo"
+    type="revolute">
+    <origin
+      xyz="0 0 0.07715"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="link_hombro" />
+    <child
+      link="link_hombro_codo" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="10"
+      velocity="3.14" />
+  </joint>
+  <link
+    name="link_codo">
+    <inertial>
+      <origin
+        xyz="-0.00516428980556016 -0.000391330935633924 0.0223035602244459"
+        rpy="0 0 0" />
+      <mass
+        value="0.314093246133126" />
+      <inertia
+        ixx="0.000129290304605087"
+        ixy="1.83556293935212E-08"
+        ixz="-1.02963704000623E-06"
+        iyy="0.000153078587799069"
+        iyz="-4.65364129734989E-07"
+        izz="0.000179583941717259" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/link_codo.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 1.5708 0" />
+      <geometry>
+        <cylinder radius="0.0375" length="0.108" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_codo"
+    type="revolute">
+    <origin
+      xyz="0 0.246 0"
+      rpy="0 0 1.5708" />
+    <parent
+      link="link_hombro_codo" />
+    <child
+      link="link_codo" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="4.1"
+      velocity="4.81" />
+  </joint>
+  <link
+    name="link_codo_muneca">
+    <inertial>
+      <origin
+        xyz="-1.39307723388693E-07 0.0135191619848798 0.0172025714731864"
+        rpy="0 0 0" />
+      <mass
+        value="0.392047475790556" />
+      <inertia
+        ixx="0.000185882757835849"
+        ixy="-8.56192744198215E-11"
+        ixz="-2.24802807187992E-09"
+        iyy="0.000170853298566717"
+        iyz="8.72755120713694E-07"
+        izz="0.000211338915615572" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/link_codo_muneca.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0.017 0"
+        rpy="1.5708 0 0" />
+      <geometry>
+        <cylinder radius="0.041" length="0.13" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_codo_muneca"
+    type="revolute">
+    <origin
+      xyz="-0.09705 0 0"
+      rpy="-1.5708 0 -1.5708" />
+    <parent
+      link="link_codo" />
+    <child
+      link="link_codo_muneca" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-2.2"
+      upper="2.2"
+      effort="4.1"
+      velocity="4.81" />
+  </joint>
+  <link
+    name="link_muneca">
+    <inertial>
+      <origin
+        xyz="0.0011814 -0.00012981 -0.014057"
+        rpy="0 0 0" />
+      <mass
+        value="0.051202" />
+      <inertia
+        ixx="1.3116E-05"
+        ixy="6.3185E-08"
+        ixz="3.0228E-07"
+        iyy="1.0727E-05"
+        iyz="4.2E-09"
+        izz="1.7924E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/link_muneca.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 -0.017"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.033" length="0.03" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_muneca"
+    type="revolute">
+    <origin
+      xyz="0 0.086566 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="link_codo_muneca" />
+    <child
+      link="link_muneca" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="0.93"
+      velocity="8.48" />
+  </joint>
+  <link
+    name="link_herramienta">
+    <inertial>
+      <origin
+        xyz="-0.0066648 -0.00010158 -0.053829"
+        rpy="0 0 0" />
+      <mass
+        value="0.010917" />
+      <inertia
+        ixx="1.1999E-05"
+        ixy="-9.9078E-09"
+        ixz="-3.0436E-06"
+        iyy="1.2645E-05"
+        iyz="-4.6367E-08"
+        izz="1.3949E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/link_herramienta.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/link_herramienta.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_herramienta"
+    type="revolute">
+    <origin
+      xyz="0 -0.0075 -0.018384"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="link_muneca" />
+    <child
+      link="link_herramienta" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="0.93"
+      velocity="8.48" />
+  </joint>
+  <link name="link_tcp">
+    
+  </link>
+  <joint
+    name="joint_tcp_fixed"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.10829"
+      rpy="0 1.5708 0" />
+    <parent
+      link="link_herramienta" />
+    <child
+      link="link_tcp" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="link_camara">
+    <inertial>
+      <origin
+        xyz="-0.019021 -9.3975E-05 -0.00037502"
+        rpy="0 0 0" />
+      <mass
+        value="0.012812" />
+      <inertia
+        ixx="2.1216E-06"
+        ixy="1.6377E-09"
+        ixz="-1.5762E-08"
+        iyy="1.2506E-06"
+        iyz="-8.5728E-09"
+        izz="1.4929E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_pkg/urdf/meshes/link_camara.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="-0.015 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.035 0.035 0.035" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_camara_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.052668 0.025492 -0.018384"
+      rpy="1.5708 0 -3.1416" />
+    <parent
+      link="link_muneca" />
+    <child
+      link="link_camara" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  
+  <ros2_control name="DynamixelSystem" type="system">
+    <hardware>
+      <plugin>dynamixel_hardware_interface/DynamixelHardware</plugin>
+      
+      <!-- COMUNICACIÓN, EN ESTE CASO SE HA PUESTO NOMBRE PERSONALIZADO AL PUERTO -->
+      <param name="port_name">/dev/ttyUSB0</param>
+      
+      <!-- VELOCIDAD: 1000000, ES LA QUE UTILIZAN LOS MOTORES XM430 -->
+      <param name="baud_rate">1000000</param>
+      <param name="protocol_version">2.0</param>
+      <param name="use_dummy">false</param> 
+      <param name="error_timeout_ms">1000</param>
+      <param name="number_of_joints">6</param> <!-- NUMERO DE ARTICULACIONES -->
+      <param name="number_of_transmissions">6</param> <!-- NUMERO DE TRANSMISIONES -->
+      <param name="disable_torque_at_init">true</param> <!-- SE PARAN LOS MOTORES AL PRINCIPIO POR SEGURIDAD -->
+      <param name="dynamixel_model_folder">/param/dxl_model</param> <!-- SE CARGAN LAS CONFIGURACIONES DE LOS MOTORES DYNAMIXEL -->
+
+      <!-- MATRICES: para transmisión directa (obligatorio en este driver) -->
+      <param name="transmission_to_joint_matrix">
+      1,0,0,0,0,0,
+      0,1,0,0,0,0,
+      0,0,1,0,0,0,
+      0,0,0,1,0,0,
+      0,0,0,0,1,0,
+      0,0,0,0,0,1
+      </param>
+      <param name="joint_to_transmission_matrix">
+      1,0,0,0,0,0,
+      0,1,0,0,0,0,
+      0,0,1,0,0,0,
+      0,0,0,1,0,0,
+      0,0,0,0,1,0,
+      0,0,0,0,0,1
+      </param>
+      
+      <param name="ros_update_freq">200</param>
+      <param name="dynamixel_state_pub_msg_name">dynamixel_hardware_interface/dxl_state</param>
+      <param name="get_dynamixel_data_srv_name">dynamixel_hardware_interface/get_dxl_data</param>
+      <param name="set_dynamixel_data_srv_name">dynamixel_hardware_interface/set_dxl_data</param>
+      <param name="reboot_dxl_srv_name">dynamixel_hardware_interface/reboot_dxl</param>
+      <param name="set_dxl_torque_srv_name">dynamixel_hardware_interface/set_dxl_torque</param>
+    </hardware>
+
+    <!-- MOTOR 1 INTERFACES NECESARIAS PARA EL FUNCIONAMIENTO-->
+    <joint name="joint_hombro">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    
+    <joint name="joint_hombro_codo">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    
+    <joint name="joint_codo">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    
+    <joint name="joint_codo_muneca">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    
+    <joint name="joint_muneca">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    
+    <joint name="joint_herramienta">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <!-- RESTO DE DEFINICION JOINTS CON SU RESPECTIVO NOMBRE -->
+    
+    <gpio name="dxl1">
+      <param name="type">dxl</param>
+      <param name="ID">1</param> <!-- ID DEL MOTOR -->
+      <command_interface name="Goal Position"/>
+      <state_interface name="Present Position"/>
+      <state_interface name="Present Velocity"/>
+      <state_interface name="Present Current"/>
+      <state_interface name="Torque Enable"/>
+      <state_interface name="Present Input Voltage"/>
+      <param name="Position P Gain">500</param>
+      <param name="Position I Gain">50</param>
+      <param name="Position D Gain">200</param>
+      <param name="Profile Velocity">20</param>
+      <param name="Profile Acceleration">10</param>
+      <param name="Drive Mode">0</param>
+      <param name="Return Delay Time">0</param>
+    </gpio>
+    
+    <gpio name="dxl2">
+      <param name="type">dxl</param>
+      <param name="ID">2</param> <!-- ID DEL MOTOR -->
+      <command_interface name="Goal Position"/>
+      <state_interface name="Present Position"/>
+      <state_interface name="Present Velocity"/>
+      <state_interface name="Present Current"/>
+      <state_interface name="Torque Enable"/>
+      <state_interface name="Present Input Voltage"/>
+      <param name="Position P Gain">800</param>
+      <param name="Position I Gain">300</param>
+      <param name="Position D Gain">500</param>
+      <param name="Profile Velocity">20</param>
+      <param name="Profile Acceleration">10</param>
+      <param name="Drive Mode">0</param>
+      <param name="Return Delay Time">0</param>
+    </gpio>
+    
+    <gpio name="dxl3">
+      <param name="type">dxl</param>
+      <param name="ID">3</param> <!-- ID DEL MOTOR -->
+      <command_interface name="Goal Position"/>
+      <state_interface name="Present Position"/>
+      <state_interface name="Present Velocity"/>
+      <state_interface name="Present Current"/>
+      <state_interface name="Torque Enable"/>
+      <state_interface name="Present Input Voltage"/>
+      <param name="Position P Gain">350</param>
+      <param name="Position I Gain">250</param>
+      <param name="Position D Gain">1000</param>
+      <param name="Profile Velocity">20</param>
+      <param name="Profile Acceleration">10</param>
+      <param name="Drive Mode">0</param>
+      <param name="Return Delay Time">0</param>
+    </gpio>
+    
+    <gpio name="dxl4">
+      <param name="type">dxl</param>
+      <param name="ID">4</param> <!-- ID DEL MOTOR -->
+      <command_interface name="Goal Position"/>
+      <state_interface name="Present Position"/>
+      <state_interface name="Present Velocity"/>
+      <state_interface name="Present Current"/>
+      <state_interface name="Torque Enable"/>
+      <state_interface name="Present Input Voltage"/>
+      <param name="Position P Gain">600</param>
+      <param name="Position I Gain">100</param>
+      <param name="Position D Gain">50</param>
+      <param name="Profile Velocity">20</param>
+      <param name="Profile Acceleration">10</param>
+      <param name="Drive Mode">0</param>
+      <param name="Return Delay Time">0</param>
+    </gpio>
+    
+    <gpio name="dxl5">
+      <param name="type">dxl</param>
+      <param name="ID">5</param> <!-- ID DEL MOTOR -->
+      <command_interface name="Goal Position"/>
+      <state_interface name="Present Position"/>
+      <state_interface name="Present Velocity"/>
+      <state_interface name="Present Current"/>
+      <state_interface name="Torque Enable"/>
+      <state_interface name="Present Input Voltage"/>
+      <param name="Position P Gain">700</param>
+      <param name="Position I Gain">200</param>
+      <param name="Position D Gain">900</param>
+      <param name="Profile Velocity">20</param>
+      <param name="Profile Acceleration">10</param>
+      <param name="Drive Mode">0</param>
+      <param name="Return Delay Time">0</param>
+    </gpio>
+    
+    <gpio name="dxl6">
+      <param name="type">dxl</param>
+      <param name="ID">6</param> <!-- ID DEL MOTOR -->
+      <command_interface name="Goal Position"/>
+      <state_interface name="Present Position"/>
+      <state_interface name="Present Velocity"/>
+      <state_interface name="Present Current"/>
+      <state_interface name="Torque Enable"/>
+      <state_interface name="Present Input Voltage"/>
+      <param name="Position P Gain">350</param>
+      <param name="Position I Gain">120</param>
+      <param name="Position D Gain">900</param>
+      <param name="Profile Velocity">20</param>
+      <param name="Profile Acceleration">10</param>
+      <param name="Drive Mode">0</param>
+      <param name="Return Delay Time">0</param>
+    </gpio>
+    
+    <!-- RESTO DE DEFINICION DE MOTORES -->
+    
+  </ros2_control>
+
+</robot>

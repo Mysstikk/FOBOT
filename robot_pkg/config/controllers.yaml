@@ -1,0 +1,58 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz: Frecuencia del bucle de control
+
+    # Definimos los controladores que queremos disponibles, estos son para definir trayectorias del brazo
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+      
+    fobot_joint_controller:
+      type: forward_command_controller/ForwardCommandController
+
+# Configuración del controlador de trayectoria
+joint_trajectory_controller:
+  ros__parameters:
+    # Nombres de las articulaciones, deben coincidir con los del fichero robot.urdf.xacro  
+    joints:
+      - joint_hombro
+      - joint_hombro_codo
+      - joint_codo
+      - joint_codo_muneca
+      - joint_muneca
+      - joint_herramienta
+
+    # Interfaces para poder mandar los mensajes y controlar los motores    
+    command_interfaces:
+      - position
+    
+    state_interfaces:
+      - position
+      - velocity
+    
+    # Parámetros opcionales para suavizar
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: true
+    enforce_joint_limits: true
+    
+fobot_joint_controller:
+  ros__parameters:
+    interface_name: position
+  
+    joints:
+      - joint_hombro
+      - joint_hombro_codo
+      - joint_codo
+      - joint_codo_muneca
+      - joint_muneca
+      - joint_herramienta
+    
+    command_interfaces:
+      - position
+    
+    state_interfaces:
+      - position
+      - velocity

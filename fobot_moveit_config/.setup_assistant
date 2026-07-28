@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: robot_pkg
+    relative_path: urdf/robot.urdf.xacro
+  srdf:
+    relative_path: config/FOBOT.srdf
+  package_settings:
+    author_name: gromep
+    author_email: gromep@example.es
+    generated_timestamp: 1783688067

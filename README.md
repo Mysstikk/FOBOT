@@ -36,6 +36,7 @@ FOBOT/
 ├── fobot_moveit_config/       # Configuración de MoveIt 2
 ├── fobot_vision/              # Detección facial y control visual
 ├── singularity_probe/         # Análisis del jacobiano
+├── DynamixelSDK               # SDK de los motores Dynamixel
 ├── dynamixel_interfaces/      # Mensajes y servicios de Dynamixel
 ├── dynamixel_hardware_interface/
 │                              # Integración con ros2_control

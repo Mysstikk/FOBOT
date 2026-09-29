@@ -92,6 +92,8 @@ class MouthDetector(Node):
         
         self.actual_state = 'INICIO'
         
+        self.last_face_time = 0.0
+        
     def state_cb(self, msg):
         self.actual_state = msg.data
             
@@ -134,6 +136,13 @@ class MouthDetector(Node):
         point.header.frame_id = 'link_camara'
 
         if results.multi_face_landmarks:
+
+          current_time = time.time()
+            
+            # Si hemos estado más de 1 segundo sin ver una cara (ej. durante la trayectoria), borramos la memoria
+          if current_time - self.last_face_time > 1.0:
+              self.iris_history.clear()
+          self.last_face_time = current_time
 
           for face_landmarks in results.multi_face_landmarks:
 
@@ -180,7 +189,7 @@ class MouthDetector(Node):
             Y_opt = (v - self.cy) * Z_opt / self.fy
             X_opt = (u - self.cx) * Z_opt / self.fx
             
-            self.get_logger().info(f"X: {Z_opt} | Y: {-X_opt} | Z: {-Y_opt}")
+            # self.get_logger().info(f"X: {Z_opt} | Y: {-X_opt} | Z: {-Y_opt}")
             
             # self.get_logger().info(f"DISTANCIA Z {Z_opt}")
             
@@ -212,7 +221,7 @@ class MouthDetector(Node):
             
             mean_op = (op_left + op_right) / 2.0
             
-            if mean_op < 5.0 and self.actual_state == 'MODO_SERVOING':
+            if mean_op < 7.0 and self.actual_state == 'MODO_SERVOING':
                 if self.init_eyes_closed is None:
                     self.init_eyes_closed = time.time()
                 else:

@@ -37,6 +37,7 @@ install(PROGRAMS
   src/movement.py
   src/sequencer.py
   src/collision_detector.py
+  src/save_positions_ros.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

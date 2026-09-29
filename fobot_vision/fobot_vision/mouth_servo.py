@@ -13,9 +13,9 @@ class MouthServo(Node):
         super().__init__('mouth_servo')
 
         self.declare_parameter('planning_frame', 'base_link')
-        self.declare_parameter('max_linear_speed', 0.02)   # m/s — keep SLOW near a face
+        self.declare_parameter('max_linear_speed', 0.03)   # m/s — keep SLOW near a face
         self.declare_parameter('p_gain', 1.0)
-        self.declare_parameter('deadband', 0.8)           # m — stop jittering once this close
+        self.declare_parameter('deadband', 0.14)           # m — stop jittering once this close
 
         self.planning_frame = self.get_parameter('planning_frame').value
         self.max_speed = self.get_parameter('max_linear_speed').value
@@ -26,7 +26,7 @@ class MouthServo(Node):
         self.declare_parameter('target_quat_xyzw', [0.001, -0.002, -0.707, 0.707])
         self.declare_parameter('p_gain_angular', 1.5)
         self.declare_parameter('max_angular_speed', 0.3)
-        self.declare_parameter('min_approach_distance', 0.05)
+        self.declare_parameter('min_approach_distance', 0.08)
 
         self.target_rotation = R.from_quat(self.get_parameter('target_quat_xyzw').value)
         self.p_gain_angular = self.get_parameter('p_gain_angular').value
@@ -49,6 +49,10 @@ class MouthServo(Node):
             Trigger, '/servo_node/start_servo')
             
         self.signal_sent = False
+        
+        self.is_waiting_for_user = False
+        self.wait_start_time = None
+        self.wait_duration = 4.0
         
         self.last_target_time = None
         self.target_timeout = 0.5
@@ -76,9 +80,9 @@ class MouthServo(Node):
             self.get_logger().warn(f'TF transform failed: {e}')
             return
             
-        transformed.point.z += 0.1
+        transformed.point.z += 0.05
             
-        alpha = 0.3  # lower = smoother but laggier; tune by feel
+        alpha = 0.15  # lower = smoother but laggier; tune by feel
         if self.last_target is None:
             self.last_target = transformed
         else:
@@ -89,20 +93,13 @@ class MouthServo(Node):
         self.last_target_time = self.get_clock().now()
 
     def control_loop(self):    
-        self.signal_sent = False
         if self.last_target is None or self.last_target_time is None:
             return
             
-        age = (self.get_clock().now() - self.last_target_time).nanoseconds / 1e9
-        if age > self.target_timeout:
-            self.get_logger().warn(f'No fresh detection for {age:.2f}s — holding position')
-            return
-
         try:
             current_tf = self.tf_buffer.lookup_transform(
                 self.planning_frame, 'link_tcp', rclpy.time.Time())
         except Exception as e:
-            self.get_logger().warn(f'Could not look up current EE pose: {e}')
             return
 
         current = np.array([
@@ -116,44 +113,77 @@ class MouthServo(Node):
             self.last_target.point.z,
         ])
         
-        error = target - current
-        dist = np.linalg.norm(error)
-        
-        # self.get_logger().info(f'dist={dist:.4f}  target_z={target[2]:.4f}  current_z={current[2]:.4f}', throttle_duration_sec=0.5)
-        
-        if dist < self.min_approach_distance:
-            self.signal_sent = False
-            direction = - error / dist if dist > 1e-6 else np.zeros(3)
-            speed = np.clip(self.p_gain * (0.2 - dist), 0, self.max_speed)
-            velocity = speed * direction
-        elif dist < self.deadband:
-            if not self.signal_sent:
-                self.get_logger().info('Posición alcanzada')
-                msg = Bool()
-                msg.data = True
-                self.repeat_pub.publish(msg)
-                self.signal_sent = True
-            return
-        else:
-            direction = error / dist
-            speed = np.clip(self.p_gain * dist, 0, self.max_speed)
-            velocity = direction * speed
-            
-        current_rot = R.from_quat([current_tf.transform.rotation.x,
-                                    current_tf.transform.rotation.y,
-                                    current_tf.transform.rotation.z,
-                                    current_tf.transform.rotation.w])
-                                    
-        error_rot = self.target_rotation * current_rot.inv()
-        rotvec = error_rot.as_rotvec()
-        angular_velocity = np.clip(self.p_gain_angular * rotvec, -self.max_angular_speed, self.max_angular_speed)
+        dist = np.linalg.norm(target - current)
+        age = (self.get_clock().now() - self.last_target_time).nanoseconds / 1e9
 
+        # ==========================================
+        # ESTADO 1: COMIENDO (Temporizador Blindado)
+        # ==========================================
+        # Si el temporizador arrancó, ignoramos si perdemos la cara o si la distancia fluctúa.
+        if self.is_waiting_for_user:
+            elapsed_time = (self.get_clock().now() - self.wait_start_time).nanoseconds / 1e9
+            
+            if elapsed_time >= self.wait_duration:
+                if not self.signal_sent:
+                    self.get_logger().info('Tiempo de comer finalizado. Retomando trayectoria...')
+                    msg = Bool()
+                    msg.data = True
+                    self.repeat_pub.publish(msg)
+                    self.signal_sent = True
+                    self.is_waiting_for_user = False # Apagamos el estado de comida
+            
+            # Obligamos al robot a quedarse absolutamente quieto mientras comes
+            self.detener_robot()
+            return
+            
+        # ==========================================
+        # ESTADO 2: SEGURIDAD (Perdimos la cara)
+        # ==========================================
+        if age > self.target_timeout:
+            # Si hace más de 0.5s que no vemos la cara y NO estabas comiendo, nos paramos por seguridad
+            self.last_target = None
+            self.detener_robot()
+            return
+
+        # ==========================================
+        # ESTADO 3: ACERCAMIENTO A LA BOCA
+        # ==========================================
+        if dist < self.min_approach_distance:
+            # Muy cerca (peligro), retrocedemos un poco
+            direction = - (target - current) / dist if dist > 1e-6 else np.zeros(3)
+            speed = np.clip(self.p_gain * (0.2 - dist), 0, self.max_speed)
+            self.mover_robot(direction * speed)
+            
+        elif dist < self.deadband:
+            # ¡Entraste en la zona! Bloqueamos el estado para iniciar el timer
+            if not self.signal_sent:
+                self.is_waiting_for_user = True
+                self.wait_start_time = self.get_clock().now()
+                self.get_logger().info('Temporizador iniciado: 4 segundos fijos para comer')
+            self.detener_robot()
+            
+        else:
+            # Lejos de la boca, nos acercamos con normalidad
+            self.signal_sent = False # Reseteamos por si venimos de haber comido el bocado anterior
+            direction = (target - current) / dist
+            speed = np.clip(self.p_gain * dist, 0, self.max_speed)
+            self.mover_robot(direction * speed)
+
+    # Funciones auxiliares para mantener el código limpio
+    def detener_robot(self):
+        msg_stop = TwistStamped()
+        msg_stop.header.stamp = self.get_clock().now().to_msg()
+        msg_stop.header.frame_id = self.planning_frame
+        msg_stop.twist.linear.x, msg_stop.twist.linear.y, msg_stop.twist.linear.z = 0.0, 0.0, 0.0
+        msg_stop.twist.angular.x, msg_stop.twist.angular.y, msg_stop.twist.angular.z = 0.0, 0.0, 0.0
+        self.twist_pub.publish(msg_stop)
+
+    def mover_robot(self, velocity):
         msg = TwistStamped()
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.header.frame_id = self.planning_frame
         msg.twist.linear.x, msg.twist.linear.y, msg.twist.linear.z = velocity.tolist()
-        msg.twist.angular.x, msg.twist.angular.y, msg.twist.angular.z = angular_velocity.tolist()
-        # self.get_logger().info(f"MENSAJE DE VELOCIDADES {msg}")
+        msg.twist.angular.x, msg.twist.angular.y, msg.twist.angular.z = 0.0, 0.0, 0.0
         self.twist_pub.publish(msg)
 
 

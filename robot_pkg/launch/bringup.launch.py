@@ -100,6 +100,12 @@ def generate_launch_description():
         executable="collision_detector.py",
         output="screen"
     )
+    
+    manual_node = Node(
+        package="robot_pkg", 
+        executable="save_positions_ros.py",
+        output="screen"
+    )
 
     return LaunchDescription([
         control_node,
@@ -110,6 +116,7 @@ def generate_launch_description():
         movement_node,
         sequencer_node,
         collision_node,
+        manual_node,
     ])
 
 

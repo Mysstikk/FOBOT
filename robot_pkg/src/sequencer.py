@@ -64,19 +64,27 @@ class Sequencer(Node):
         self.state_msg = String()
         
     def interface_cb(self, msg):
-        if msg.data == 'homing':
+        cmd = msg.data
+        
+        if cmd == 'pulsacion_corta':
             if self.state == 'ESPERA':
                 self.homing()
-            else:
-                self.get_logger().warning('Homing denegado')
+            elif self.state == 'ERROR':
+                self.rearme()
+    
+        elif cmd == 'pulsacion_larga':
+            if self.state == 'ESPERA':
+                self.get_logger().info('MODO MANUAL ACTIVADO')
+                self.activar_manual()
+            elif self.state == 'MODO_MANUAL':
+                self.get_logger().info('MODO MANUAL DESACTIVADO')
+                self.desactivar_manual()
+        
         elif msg.data == 'auto':
             if self.state == 'ESPERA':
                 self.activar_auto()
         elif msg.data == 'emergencia':
             self.emergencia()
-        elif msg.data == 'rearme':
-            if self.state == 'ERROR':
-                self.rearme()
             
     def movement_done_cb(self, msg):
         if 'homing' in msg.data:

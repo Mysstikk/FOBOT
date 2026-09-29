@@ -10,6 +10,7 @@ from control_msgs.action import FollowJointTrajectory
 from builtin_interfaces.msg import Duration
 from rclpy.action import ActionClient
 from controller_manager_msgs.srv import SwitchController
+from dynamixel_interfaces.srv import SetDataToDxl
 
 class MoveRobot(Node):
     def __init__(self):
@@ -41,6 +42,9 @@ class MoveRobot(Node):
             
         self.fobot_cmd_pub = self.create_publisher(
             Float64MultiArray, '/fobot_joint_controller/commands', 10)
+            
+        self.dxl_data_client = self.create_client(
+            SetDataToDxl, '/dynamixel_hardware_interface/set_dxl_data')
         
         self.joint_names = [
             'joint_hombro', 'joint_hombro_codo', 'joint_codo',
@@ -199,7 +203,7 @@ class MoveRobot(Node):
             if response.ok:
                 self.get_logger().info('El robot ya es controlado por Trayectorias.')
                 self.current_mode = "stop"
-                
+                self.publish_points([[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]])
                 self.points_list = []
             else:
                 self.get_logger().error("Error en el cambio de controlador")
@@ -237,6 +241,28 @@ class MoveRobot(Node):
                     self.publish_points(self.points_list)
                 else:
                     self.is_moving = False
+                    
+        elif msg.data and 'ERROR' in msg.data:
+            self.is_moving = True
+            self.current_mode = "error"
+            
+            if self.latest_joint_state == None:
+                self.get_logger().error('No se puede bloquear')
+                return
+                
+            try:
+                current_positions = [self.latest_joint_state.position[self.latest_joint_state.name.index(j)] for j in self.joint_names]
+            except ValueError as e:
+                return
+                
+            self.publish_points([current_positions])
+            
+            msg_cmd = Float64MultiArray(data=current_positions)
+            for _ in range(3):
+                self.fobot_cmd_pub.publish(msg_cmd)
+                
+        elif msg.data and 'ESPERA' in msg.data:
+            self.is_moving = False
                     
     def stop_signal_cb(self, msg):
         if 'stop' in msg.data:

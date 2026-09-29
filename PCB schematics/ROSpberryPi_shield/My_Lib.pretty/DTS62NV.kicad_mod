@@ -1,0 +1,230 @@
+(footprint "DTS62NV"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "DTS-62N-V-1")
+	(tags "Switch")
+	(property "Reference" "S**"
+		(at 3.25 2.25 0)
+		(layer "F.SilkS")
+		(uuid "50090aa1-dd21-4bb4-a68f-38770069691c")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Value" "DTS62NV"
+		(at 3.25 2.25 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "8f3cbdb6-6e9e-4e08-b37f-80bac5bbb227")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "6276cc4b-a91c-4824-971f-12cd585da047")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3bc77ac2-0cc2-4605-a48f-f1bf81036fe9")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr through_hole)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start 0.15 1.05)
+		(end 0.15 3.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "d1a86685-28db-4d6c-8567-97e4e11ed5f4")
+	)
+	(fp_line
+		(start 0.55 5.35)
+		(end 5.95 5.35)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "7a1f8c8b-df87-41fb-b904-8d91523cf871")
+	)
+	(fp_line
+		(start 1.15 -0.85)
+		(end 5.95 -0.85)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "c880db33-6533-42bf-a853-0826ee909158")
+	)
+	(fp_line
+		(start 6.35 3.45)
+		(end 6.35 1.05)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "6844ae0c-6d2f-489e-84d5-24992ccd202e")
+	)
+	(fp_line
+		(start -1.787 -1.85)
+		(end 8.287 -1.85)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "86107bb4-b011-4be6-9e90-ab98645341c0")
+	)
+	(fp_line
+		(start -1.787 6.35)
+		(end -1.787 -1.85)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "cbcc16b2-3a60-4c24-bde2-23c2c4a009c3")
+	)
+	(fp_line
+		(start 8.287 -1.85)
+		(end 8.287 6.35)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "01857a4f-2f18-449c-ad03-8594eb3dd8f7")
+	)
+	(fp_line
+		(start 8.287 6.35)
+		(end -1.787 6.35)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "a3a3fc5a-b3e7-4154-9d4f-140fadc0853d")
+	)
+	(fp_line
+		(start 0.15 -0.85)
+		(end 6.35 -0.85)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "c4124688-2a92-4387-a539-f19ccb7d2b7a")
+	)
+	(fp_line
+		(start 0.15 5.35)
+		(end 0.15 -0.85)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "0d3b15fd-ed17-4bf6-85a9-3047e544ff60")
+	)
+	(fp_line
+		(start 6.35 -0.85)
+		(end 6.35 5.35)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "c8a56ab7-897b-4139-adcd-1e0b5dab6305")
+	)
+	(fp_line
+		(start 6.35 5.35)
+		(end 0.15 5.35)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "7258f52a-7361-41e9-be90-4fb8a99afcad")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 3.25 2.25 0)
+		(layer "F.Fab")
+		(uuid "59c43deb-f889-466e-8123-5a1fce09f77f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" thru_hole rect
+		(at 0 0)
+		(size 1.575 1.575)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "23a41714-e29f-4dc6-9805-ae46776391ec")
+	)
+	(pad "2" thru_hole circle
+		(at 6.5 0)
+		(size 1.575 1.575)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "899d88fe-d444-44f1-bb24-81e47e2a47ec")
+	)
+	(pad "3" thru_hole circle
+		(at 0 4.5)
+		(size 1.575 1.575)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "b1c96e92-1076-441f-a079-b53ffb13da3d")
+	)
+	(pad "4" thru_hole circle
+		(at 6.5 4.5)
+		(size 1.575 1.575)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "6eac616e-2e74-47b1-8009-200dfd8a4a4b")
+	)
+	(embedded_fonts no)
+	(model "DTS-62N-V.stp"
+		(offset
+			(xyz 3.249999951 -2.249999966 0.7099999679)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)
